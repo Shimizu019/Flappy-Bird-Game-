@@ -6,7 +6,6 @@ import java.util.Random;
 import javax.swing.*;
 
 public class FlappyBird extends JPanel implements ActionListener, KeyListener, MouseListener {
-
     int boardWidth = 360;
     int boardHeight = 640;
 
@@ -24,7 +23,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
 
     class Bird {
         int x = birdX; 
-        int y = birdY; 
+        int y = birdY;
         int width = birdWidth; 
         int height = birdHeight; 
         Image img; 
@@ -40,7 +39,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
     int pipeHeight = 512; 
 
     class Pipe {
-        int x = pipeX; 
+        int x = pipeX;
         int y = pipeY; 
         int width = pipeWidth; 
         int height = pipeHeight; 
@@ -80,7 +79,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
     boolean isPaused = false;
 
     FlappyBird() {
-        setPreferredSize(new Dimension(boardWidth, boardHeight)); // set panel size
+        setPreferredSize(new Dimension(boardWidth, boardHeight)); 
         setFocusable(true); 
         addKeyListener(this); 
         addMouseListener(this); 
@@ -93,7 +92,6 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
         bird = new Bird(birdImg);
         pipes = new ArrayList<Pipe>();
 
-
         loadHighScore();
 
         placePipeTimer = new Timer(1500, new ActionListener() {
@@ -105,33 +103,35 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
             }
         });
         
-        gameLoop = new Timer(1000 / 60, this);
+        gameLoop = new Timer(1000 / 60, this); 
 
     }
 
     void placePipes() {
-
+       
         int randomPipeY = (int) (pipeY - pipeHeight / 4 - Math.random() * (pipeHeight / 2));
 
         Pipe topPipe = new Pipe(topPipeImg);
-        topPipe.y = randomPipeY;
+        topPipe.y = randomPipeY; 
         pipes.add(topPipe); 
 
         Pipe bottomPipe = new Pipe(bottomPipeImg);
-        bottomPipe.y = topPipe.y + pipeHeight + openingSpace;
+        bottomPipe.y = topPipe.y + pipeHeight + openingSpace; 
         pipes.add(bottomPipe); 
+    }
+
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g); 
+        draw(g); 
     }
 
     public void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
 
         g2d.drawImage(backgroundImg, 0, 0, boardWidth, boardHeight, null);
 
         if (!gameStarted) {
-
             g2d.drawImage(backgroundImg, 0, 0, boardWidth, boardHeight, null);
 
             String title = "FlappyBird";
@@ -155,7 +155,6 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
             playButton.y = boardHeight - playButton.height - 60; 
 
             g2d.setColor(new Color(0, 150, 0));
-
             int[] xPoints = { playButton.x + 25, playButton.x + 25, playButton.x + 55 };
             int[] yPoints = { playButton.y + 15, playButton.y + 35, playButton.y + 25 };
             g2d.fillPolygon(xPoints, yPoints, 3);
@@ -190,7 +189,6 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
         g2d.drawString(pauseButtonText, pauseButtonTextX, pauseButtonTextY);
 
         if (isPaused) {
-
             g2d.setColor(new Color(0, 0, 0, 150));
             g2d.fillRect(0, 0, boardWidth, boardHeight);
 
@@ -204,11 +202,13 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
             g2d.setStroke(new BasicStroke(3));
             g2d.drawRoundRect(pauseBoxX, pauseBoxY, pauseBoxWidth, pauseBoxHeight, 20, 20);
 
+
             Font pauseFont = new Font("Verdana", Font.BOLD, 36);
             g2d.setFont(pauseFont);
             String pauseText = "Pause";
             int pauseTextWidth = g2d.getFontMetrics().stringWidth(pauseText);
             g2d.drawString(pauseText, (boardWidth - pauseTextWidth) / 2, pauseBoxY + 50);
+
 
             int buttonWidth = 110;
             int buttonHeight = 50;
@@ -254,7 +254,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
         }
 
         String scoreText;
-        Font scoreFont = new Font("Verdana", Font.BOLD, 36); // reduced font size
+        Font scoreFont = new Font("Verdana", Font.BOLD, 36); 
         g2d.setFont(scoreFont);
 
         if (gameOver) {
@@ -269,7 +269,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
             g2d.setColor(Color.red);
             g2d.drawString(scoreText, x, y);
 
-            Font restartFont = new Font("Verdana", Font.PLAIN, 18); // reduced font size
+            Font restartFont = new Font("Verdana", Font.PLAIN, 18); 
             g2d.setFont(restartFont);
             String restartText = "Press SPACE to Restart";
             int restartWidth = g2d.getFontMetrics().stringWidth(restartText);
@@ -319,21 +319,19 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
 
         for (int i = 0; i < pipes.size(); i++) {
             Pipe pipe = pipes.get(i);
-            pipe.x += velocityX;
-
+            pipe.x += velocityX; 
+e
             if (!pipe.passed && bird.x > pipe.x + pipe.width) {
                 score += 0.5; 
-                pipe.passed = true;
+                pipe.passed = true; 
                 if (score > highScore) {
                     highScore = score; 
                     saveHighScore(); 
                 }
             }
 
-            // Check collision between bird and pipe
             if (collision(bird, pipe)) {
                 gameOver = true; 
-
                 placePipeTimer.stop();
                 gameLoop.stop();
             }
@@ -341,7 +339,6 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
 
         if (bird.y > boardHeight) {
             gameOver = true;
-
             placePipeTimer.stop();
             gameLoop.stop();
         }
@@ -427,7 +424,6 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
                     gameLoop.start();
                     repaint();
                     
-
                 } else if (leaveButton.contains(p)) {
 
                     isPaused = false;
@@ -453,7 +449,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
         velocityY = 0;
         bird.y = birdY;
         pipes.clear();
-        // Reset difficulty parameters
+
         velocityX = -4;
         openingSpace = boardHeight / 4;
         placePipeTimer.setDelay(1500);
@@ -463,10 +459,8 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
     }
 
     private void updateDifficulty() {
-
         int speedIncrease = (int) (score / 5);
         velocityX = Math.max(-10, -4 - speedIncrease);
-
         int gapDecrease = (int) (score / 5) * 10;
         openingSpace = Math.max(100, (boardHeight / 4) - gapDecrease);
 
@@ -496,20 +490,17 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
         try (DataInputStream dis = new DataInputStream(new FileInputStream(HIGH_SCORE_FILE))) {
             highScore = dis.readDouble();
         } catch (IOException e) {
-
+            
             highScore = 0;
         }
     }
 
-    // Save high score to file
     private void saveHighScore() {
         try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(HIGH_SCORE_FILE))) {
             dos.writeDouble(highScore);
         } catch (IOException e) {
-
         }
     }
-
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Flappy Bird");
