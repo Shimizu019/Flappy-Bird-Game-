@@ -158,15 +158,6 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
     }
 
     /*
-     * paintComponent is called by Swing to repaint the panel.
-     * It calls draw() to render game elements.
-     */
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g); // clear screen
-        draw(g); // draw game elements
-    }
-
-    /*
      * draw renders the background, bird, pipes, and score on the screen.
      */
     public void draw(Graphics g) {
@@ -536,7 +527,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
                     placePipeTimer.start();
                     gameLoop.start();
                     repaint();
-                    return;
+                    
 
                 } else if (leaveButton.contains(p)) {
 
@@ -551,7 +542,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
                     placePipeTimer.stop();
                     gameLoop.stop();
                     repaint();
-                    return;
+                    
                 }
             }
         }
