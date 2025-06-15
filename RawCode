@@ -1,6 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.io.*;  // Added for file I/O
+import java.io.*; 
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.*;
@@ -133,8 +133,8 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
         
         // Do not start pipe placement timer yet, wait for game start
         // placePipeTimer.start();
-        // Game loop timer runs at ~60 FPS, calls actionPerformed
-        gameLoop = new Timer(1000 / 120, this); // set FPS to 60 for smoother animation
+        // Game loop timer runs at 60 or 120 FPS, calls actionPerformed
+        gameLoop = new Timer(1000 / 60, this); // set FPS to 60 for smoother animation
         // Do not start game loop timer yet, wait for game start
         // gameLoop.start();
     }
@@ -178,11 +178,8 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
         g2d.drawImage(backgroundImg, 0, 0, boardWidth, boardHeight, null);
 
         if (!gameStarted) {
-            // Draw start screen UI with improved gradient background
-            GradientPaint startGradient = new GradientPaint(0, 0, new Color(100, 149, 237), 0, boardHeight,
-                    new Color(0, 0, 139));
-            g2d.setPaint(startGradient);
-            g2d.fillRect(0, 0, boardWidth, boardHeight);
+            // Draw the background image stretched to fill the panel on start screen
+            g2d.drawImage(backgroundImg, 0, 0, boardWidth, boardHeight, null);
 
             // Draw title text "FlappyBird" with shadow for better readability
             String title = "FlappyBird";
@@ -215,7 +212,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
             int[] xPoints = { playButton.x + 25, playButton.x + 25, playButton.x + 55 };
             int[] yPoints = { playButton.y + 15, playButton.y + 35, playButton.y + 25 };
             g2d.fillPolygon(xPoints, yPoints, 3);
-            g2d.setColor(Color.white);
+            g2d.setColor(new Color(0, 150, 0)); // green border color
             g2d.setStroke(new BasicStroke(2));
             g2d.drawRoundRect(playButton.x, playButton.y, playButton.width, playButton.height, 15, 15);
 
@@ -626,5 +623,17 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener, M
         } catch (IOException e) {
             // Error saving high score, ignore or log if needed
         }
+    }
+
+    // Main method to run and test the game
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Flappy Bird");
+        FlappyBird gamePanel = new FlappyBird();
+        frame.add(gamePanel);
+        frame.pack();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        frame.setResizable(false);
+        frame.setVisible(true);
     }
 }
